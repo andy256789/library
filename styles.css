@@ -1,12 +1,20 @@
 :root {
-    --background-color: #ff6666;
-    --card-background-color: #6a3b3b;
+    --background-color: #364958;
+    --card-background-color: #3b6064;
+    --library-background-color: #55828b;
+    --button-color: #87bba2;
+    --button-on: #008500;
+    --button-off: #a81b1b;
+    --button-delete: #351414;
+
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
 }
 
 body {
@@ -15,31 +23,54 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+}
+
+body>h1 {
+    font-size: 5rem;
 }
 
 .library {
-    height: 50%;
+    height: 60%;
     width: 100%;
-    flex-grow: 0;
-    background-color: grey;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background-color: var(--library-background-color);
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
     gap: 3rem;
+    padding: 2rem;
 }
 
 .book {
-    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    width: 20%;
+    min-width: 500px;
     background-color: var(--card-background-color);
     border-radius: 30px;
-    padding: 20px;
+    padding: 50px 20px;
 }
 
+.book>h1,
+.book>h2,
+.book>p {
+    font-weight: 500;
+    font-size: 2rem;
+    align-self: center;
+
+}
+
+.book>h1 {
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.delete {
+    background-color: var(--button-delete);
+}
 
 .dialog {
+    background-color: transparent;
     border: none;
     outline: none;
     position: absolute;
@@ -47,36 +78,90 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     height: 50%;
-    width: 30%;
+    width: 25%;
+}
+
+.image {
+    display: block;
+    height: 150px;
+    width: 150px;
+    background-image: url(./images/book.png);
+    background-size: 100%;
+    align-self: center;
 }
 
 .dialog>form {
+    background-color: var(--background-color);
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     padding: 10% 20%;
+    border: 5px solid var(--card-background-color);
+    border-radius: 30px;
+}
+
+::backdrop {
+    background-color: #000;
+    opacity: 60%;
+}
+
+form>h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+form input {
+    font-size: 2rem;
+    border-radius: 20px;
+    padding-left: 10%;
+}
+
+form input[type="checkbox"] {
+    width: 3rem;
+    height: 3rem;
+}
+
+.dialog>form label+label {
+    margin-top: 130px;
 }
 
 .dialog>form label {
     align-self: flex-start;
+    font-size: 2rem;
 }
 
 .dialog>form input {
     outline: none;
     border: none;
-    background-color: #b4b4b4;
+    background-color: var(--card-background-color);
     width: 100%;
 }
 
 button {
     padding: 1rem 2rem;
-    background-color: aliceblue;
+    background-color: var(--button-color);
+    font-weight: bold;
     border: none;
     outline: none;
     border-radius: 30px;
     font-size: 2rem;
     margin-top: 50px;
+}
+
+button:hover {
+    filter: brightness(150%);
+}
+
+
+
+.on {
+    background-color: var(--button-on);
+}
+
+.off {
+    background-color: var(--button-off);
 }

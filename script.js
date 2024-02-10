@@ -13,7 +13,8 @@ dialogShow.addEventListener("click", () => dialog.showModal());
 
 dialogConfirm.addEventListener("click", (event) => {
     event.preventDefault();
-    addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, formRead.checked ? "read" : "not read");
+    if (!(formTitle.value && formAuthor.value && formPages.value)) { return }
+    addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, formRead.checked);
     formTitle.value = "";
     formAuthor.value = "";
     formPages.value = "";
@@ -41,32 +42,41 @@ function deleteBook(index) {
     printLibrary(myLibrary);
 }
 
+function changeRead(book) {
+    book.read = !book.read;
+    printLibrary(myLibrary);
+}
+
 function printLibrary(library) {
     HTMLlibrary.replaceChildren();
     library.forEach(book => {
         const card = document.createElement("div");
 
+        const image = document.createElement("div");
         const title = document.createElement("h1");
         const author = document.createElement("h2");
         const pages = document.createElement("p");
-        const read = document.createElement("p");
+        const read = document.createElement("button");
         const del = document.createElement("button");
 
-        title.textContent = `Title :${book.title}`;
-        author.textContent = `Author :${book.author}`;
-        pages.textContent = `Pages :${book.pages}`;
-        read.textContent = `Read :${book.read}`;
-        del.textContent = `Delete`;
+        title.textContent = `${book.title}`;
+        author.textContent = `by ${book.author}`;
+        pages.textContent = `${book.pages} pages`;
+        read.textContent = `${book.read ? "READ" : "NOT READ"}`;
+        book.read ? read.classList.add("on") : read.classList.add("off");
+        del.textContent = `DELETE`;
+        del.classList.add("delete");
+        image.classList.add("image");
 
-
+        read.addEventListener("click", () => changeRead(book));
         del.addEventListener("click", () => deleteBook(library.indexOf(book)));
 
-
-        card.appendChild(title)
-            .appendChild(author)
-            .appendChild(pages)
-            .appendChild(read)
-            .appendChild(del);
+        card.appendChild(title);
+        card.appendChild(author);
+        card.appendChild(pages);
+        card.appendChild(image);
+        card.appendChild(read);
+        card.appendChild(del);
 
         card.classList.add("book");
         HTMLlibrary.appendChild(card);
