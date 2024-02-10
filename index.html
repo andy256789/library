@@ -11,7 +11,31 @@
 
 <body>
     <div class="library"></div>
-    <button class="add">Add a book</button>
+    <button id="dialogShow">Add a book</button>
+
+    <dialog class="dialog">
+        <form>
+            <h1>Add a book</h1>
+            <label for="formTitle">Title:</label>
+            <input type="text" name="title" id="formTitle">
+
+            <label for="formAuthor">Author:</label>
+            <input type="text" name="title" id="formAuthor">
+
+            <label for="formPages">Pages:</label>
+            <input type="text" name="title" id="formPages">
+
+            <div>
+                <label for="formRead">Have you read the book?</label>
+                <input type="checkbox" name="read" id="formRead">
+            </div>
+
+            <div>
+                <button value="cancel" formmethod="dialog">Cancel</button>
+                <button id="dialogConfirm" value="default">Confirm</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 
 </html>

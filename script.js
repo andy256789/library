@@ -1,5 +1,25 @@
 const HTMLlibrary = document.querySelector(".library");
-const addButton = document.querySelector(".add");
+
+const dialog = document.querySelector(".dialog");
+const dialogConfirm = document.querySelector("#dialogConfirm");
+const dialogShow = document.querySelector("#dialogShow");
+
+const formTitle = document.querySelector("#formTitle");
+const formAuthor = document.querySelector("#formAuthor");
+const formPages = document.querySelector("#formPages");
+const formRead = document.querySelector("#formRead");
+
+dialogShow.addEventListener("click", () => dialog.showModal());
+
+dialogConfirm.addEventListener("click", (event) => {
+    event.preventDefault();
+    addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, formRead.checked ? "read" : "not read");
+    formTitle.value = "";
+    formAuthor.value = "";
+    formPages.value = "";
+    formRead.checked = false;
+    dialog.close();
+});
 
 const myLibrary = [];
 
@@ -8,19 +28,16 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-
 }
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
+    printLibrary(myLibrary);
 }
-function promptUser() {
-    let title = prompt("Enter the title: ");
-    let author = prompt("Enter the author: ");
-    let pages = prompt("Enter the pages: ");
-    let read = prompt("Have you read it: ");
-    addBookToLibrary(title, author, pages, read);
+
+function deleteBook(index) {
+    myLibrary.splice(index, 1);
     printLibrary(myLibrary);
 }
 
@@ -33,23 +50,28 @@ function printLibrary(library) {
         const author = document.createElement("h2");
         const pages = document.createElement("p");
         const read = document.createElement("p");
+        const del = document.createElement("button");
 
         title.textContent = `Title :${book.title}`;
         author.textContent = `Author :${book.author}`;
         pages.textContent = `Pages :${book.pages}`;
         read.textContent = `Read :${book.read}`;
+        del.textContent = `Delete`;
+
+
+        del.addEventListener("click", () => deleteBook(library.indexOf(book)));
+
 
         card.appendChild(title)
             .appendChild(author)
             .appendChild(pages)
-            .appendChild(read);
+            .appendChild(read)
+            .appendChild(del);
 
         card.classList.add("book");
         HTMLlibrary.appendChild(card);
     });
 }
-
-addButton.addEventListener("click", () => promptUser());
 
 addBookToLibrary("The Hobbit", "J. R. R. Tolkien", "563", "not read");
 addBookToLibrary("A song of ice and fire", "George R. R. Martin", "674", "read");
