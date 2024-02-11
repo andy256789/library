@@ -1,13 +1,12 @@
 const HTMLlibrary = document.querySelector(".library");
-
 const dialog = document.querySelector(".dialog");
-const dialogConfirm = document.querySelector("#dialogConfirm");
 const dialogShow = document.querySelector("#dialogShow");
-
+const dialogConfirm = document.querySelector("#dialogConfirm");
 const formTitle = document.querySelector("#formTitle");
 const formAuthor = document.querySelector("#formAuthor");
 const formPages = document.querySelector("#formPages");
 const formRead = document.querySelector("#formRead");
+const myLibrary = [];
 
 dialogShow.addEventListener("click", () => dialog.showModal());
 
@@ -22,8 +21,6 @@ dialogConfirm.addEventListener("click", (event) => {
     dialog.close();
 });
 
-const myLibrary = [];
-
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
@@ -31,45 +28,46 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
+Book.prototype.toggleRead = function () {
+    this.read = !this.read;
+}
+
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
-    printLibrary(myLibrary);
+    printLibrary();
 }
 
 function deleteBook(index) {
     myLibrary.splice(index, 1);
-    printLibrary(myLibrary);
+    printLibrary();
 }
 
-function changeRead(book) {
-    book.read = !book.read;
-    printLibrary(myLibrary);
-}
-
-function printLibrary(library) {
+function printLibrary() {
     HTMLlibrary.replaceChildren();
-    library.forEach(book => {
+    myLibrary.forEach((book, index) => {
         const card = document.createElement("div");
 
-        const image = document.createElement("div");
         const title = document.createElement("h1");
         const author = document.createElement("h2");
         const pages = document.createElement("p");
+
+        const image = document.createElement("div");
+
         const read = document.createElement("button");
         const del = document.createElement("button");
 
         title.textContent = `${book.title}`;
         author.textContent = `by ${book.author}`;
         pages.textContent = `${book.pages} pages`;
-        read.textContent = `${book.read ? "READ" : "NOT READ"}`;
-        book.read ? read.classList.add("on") : read.classList.add("off");
+        read.textContent = book.read ? "READ" : "NOT READ";
         del.textContent = `DELETE`;
-        del.classList.add("delete");
-        image.classList.add("image");
 
-        read.addEventListener("click", () => changeRead(book));
-        del.addEventListener("click", () => deleteBook(library.indexOf(book)));
+        card.classList.add("book");
+        image.classList.add("image");
+        del.classList.add("delete");
+
+        book.read ? read.classList.add("on") : read.classList.add("off");
 
         card.appendChild(title);
         card.appendChild(author);
@@ -78,13 +76,13 @@ function printLibrary(library) {
         card.appendChild(read);
         card.appendChild(del);
 
-        card.classList.add("book");
+        read.addEventListener("click", () => {
+            book.toggleRead();
+            printLibrary();
+        });
+
+        del.addEventListener("click", () => deleteBook(index));
+
         HTMLlibrary.appendChild(card);
     });
 }
-
-addBookToLibrary("The Hobbit", "J. R. R. Tolkien", "563", "not read");
-addBookToLibrary("A song of ice and fire", "George R. R. Martin", "674", "read");
-addBookToLibrary("Fourth Wing", "Rebecca Yarros", "512", "read");
-
-printLibrary(myLibrary);
